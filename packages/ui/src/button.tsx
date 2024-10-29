@@ -1,9 +1,10 @@
+"use client";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 type ButtonTypes = "primary" | "secondary";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 	variant: ButtonTypes;
-	className: string;
+	className?: string;
 }
 function Button({ children, className, variant, ...props }: ButtonProps) {
 	const styles = {

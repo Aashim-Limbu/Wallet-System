@@ -9,17 +9,21 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@repo/ui": "*",
+		"@types/bcryptjs": "^2.4.6",
+		"bcryptjs": "^2.4.3",
 		"next": "14.2.15",
+		"next-auth": "^4.24.8",
 		"react": "^18",
 		"react-dom": "^18"
 	},
 	"devDependencies": {
+		"@repo/common": "*",
+		"@repo/db": "*",
+		"@repo/ui": "*",
+		"@tailwindcss/typography": "^0.5.15",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
-		"@repo/db": "*",
-		"@repo/ui": "*",
 		"eslint": "^8",
 		"eslint-config-next": "14.2.15",
 		"postcss": "^8",

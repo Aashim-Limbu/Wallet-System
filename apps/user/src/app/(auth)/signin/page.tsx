@@ -1,21 +1,27 @@
 import Button from "@repo/ui/button";
-import Github from "../assets/icons8-github.svg";
-import Google from "../assets/icons8-google.svg";
-import Ethereum from "../assets/ethereum-svgrepo-com.svg";
+import Github from "../../assets/icons8-github.svg";
+import Google from "../../assets/icons8-google.svg";
+import Ethereum from "../../assets/ethereum-svgrepo-com.svg";
 import Image from "next/image";
 import React from "react";
 export default function SigninPage() {
 	return (
-		<div className="min-h-full flex flex-col justify-center py-8 px-6">
-			<div className="mx-auto sm:max-w-sm md:max-w-md">
-				<div>
-					<Image className="mx-auto" src={Ethereum} height={60} width={60} alt="Ethereum Logo" />
+		<div className="h-full flex flex-col items-center justify-center">
+			<div className="mx-auto sm:w-full sm:max-w-sm md:max-w-md mt-8 bg-white rounded-lg shadow-lg px-6 py-4">
+				<div className="mx-auto sm:max-w-sm md:max-w-md">
+					<div>
+						<Image
+							className="mx-auto"
+							src={Ethereum}
+							height={50}
+							width={50}
+							alt="Ethereum Logo"
+						/>
+					</div>
+					<p className="text-center text-xl font-bold tracking-tighter">
+						Sign in to your Account
+					</p>
 				</div>
-				<p className="text-center text-xl font-bold tracking-tighter">
-					Sign in to your Account
-				</p>
-			</div>
-			<div className="mx-auto sm:w-full sm:max-w-sm md:max-w-md mt-8 bg-white rounded-lg shadow-lg p-6">
 				<form className="space-y-6">
 					<label
 						htmlFor="email"
@@ -60,20 +66,28 @@ export default function SigninPage() {
 						</Button>
 					</div>
 				</form>
-				<div className="mt-12 relative text-gray-900 font-semibold text-sm">
-					<div className="bg-gray-600 w-full h-0.5"></div>
-					<p className="bg-white text-gray-700 px-4 absolute left-1/2 -translate-x-1/2 -top-1/2 -translate-y-1/2 py-0.5">
-						Or Continue With
-					</p>
+				<div className="mt-6">
+					<div className="bg-gray-600 w-full h-0.5">
+						<div className="absolute left-1/2 bg-white p-1.5 font-semibold -translate-y-1/2 -translate-x-1/2">
+							Or Continue with
+						</div>
+					</div>
 				</div>
-				<div className="grid grid-cols-2 gap-x-5 justify-items-stretch mt-6 px-4">
-					<button className="inline-flex bg-yellow-100 font-semibold justify-center items-center ring ring-yellow-400 px-4 rounded-md ring-inset">
-						<Image src={Google} width={20} height={20} alt="Google Icon" />
-						<span className="ml-1.5">Google</span>
+
+				<div className="grid grid-cols-2 gap-x-10 mt-6 px-4">
+					<button className="inline-flex bg-yellow-100 h-10 font-semibold justify-center items-center ring ring-yellow-400 rounded-md ring-inset">
+						<Image src={Google} className="w-6 inline-flex" alt="Google Icon" />
+						<div className="ml-1.5">Google</div>
 					</button>
-					<button className="inline-flex bg-gray-200 font-semibold px-4 py-2 justify-center ring ring-inset ring-gray-500 rounded-md items-center">
-						<Image src={Github} alt="Github Icon" width={20} height={20} />
-						<span className="ml-1.5">Github</span>
+					<button className="inline-flex bg-gray-200 h-10 font-semibold justify-center ring ring-inset ring-gray-500 rounded-md items-center">
+						<div>
+							<Image
+								src={Github}
+								alt="Github Icon"
+								className="w-6 inline-flex"
+							/>
+						</div>
+						<div className="ml-1.5">Github</div>
 					</button>
 				</div>
 			</div>
