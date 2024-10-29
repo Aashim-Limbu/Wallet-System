@@ -4,6 +4,7 @@ import Google from "../../assets/icons8-google.svg";
 import Ethereum from "../../assets/ethereum-svgrepo-com.svg";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 export default function SigninPage() {
 	return (
 		<div className="h-full flex flex-col items-center justify-center">
@@ -90,6 +91,15 @@ export default function SigninPage() {
 						<div className="ml-1.5">Github</div>
 					</button>
 				</div>
+				<p className="mt-10 text-center text-sm text-gray-500">
+					Not a member?{" "}
+					<Link
+						href="/signup"
+						className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+					>
+						Sign up now
+					</Link>
+				</p>
 			</div>
 		</div>
 	);
