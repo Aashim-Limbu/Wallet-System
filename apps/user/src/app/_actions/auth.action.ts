@@ -48,6 +48,6 @@ export async function signUp(
 	}
 	if (shouldRedirect) {
 		console.log("This should redirect to home");
-		redirect("/home");
+		redirect("/");
 	}
 }

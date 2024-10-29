@@ -17,11 +17,8 @@ export default function RootLayout({
 	return (
 		<html className={`h-full ${montserrat.className}`} lang="en">
 			<body className="w-screen prose max-w-none bg-gray-50 h-full flex flex-col">
-				<div className="w-full bg-white shadow-md">
-					<NavBar />
-				</div>
 				<div className="w-full flex-1">
-					<div className="container mx-auto h-full">{children}</div>
+					<div className="mx-auto h-full">{children}</div>
 				</div>
 			</body>
 		</html>
