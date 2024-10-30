@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import NavBar from "@repo/ui/nav-bar";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
