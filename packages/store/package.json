@@ -1,15 +1,21 @@
 {
-  "name": "store",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@reduxjs/toolkit": "^2.3.0"
-  }
+	"name": "@repo/store",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"@reduxjs/toolkit": "^2.3.0",
+		"react-redux": "^9.1.2"
+	},
+	"exports": {
+		"./store": "./src/store.ts",
+		"./slice": "./src/balanceSlice.ts",
+		"./hooks": "./src/lib/hooks.ts"
+	}
 }
