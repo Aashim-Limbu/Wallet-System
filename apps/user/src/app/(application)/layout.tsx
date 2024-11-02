@@ -1,6 +1,5 @@
 import NavBar from "@repo/ui/nav-bar";
 
-import { Button } from "@repo/ui/button";
 import React from "react";
 import { ReactNode } from "react";
 
