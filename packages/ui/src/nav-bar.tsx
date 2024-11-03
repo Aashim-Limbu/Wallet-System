@@ -21,12 +21,16 @@ export default function NavBar() {
 		{ title: "Account", path: "/account" },
 	];
 	return (
-		<Disclosure as="nav" className="bg-white shadow">
+		<Disclosure as="nav" className="bg-white shadow not-prose">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="flex h-16 justify-between">
 					<div className="flex">
 						<div className="flex flex-shrink-0 items-center">
-							<NextImage alt="Your Company" src={Logo} className="h-8 w-auto ring ring-indigo-500 ring-2 rounded-full" />
+							<NextImage
+								alt="Your Company"
+								src={Logo}
+								className="h-8 w-auto ring ring-indigo-500 ring-2 rounded-full"
+							/>
 						</div>
 						<div className="hidden sm:ml-6 sm:flex sm:space-x-8">
 							{/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
@@ -34,7 +38,7 @@ export default function NavBar() {
 								<Link
 									href={item.path}
 									key={item.title}
-									className={`inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 ${pathname === item.path ? "border-b-2 border-indigo-500 text-gray-900" : "border-b-2 border-transparent"} hover:border-gray-300 hover:text-gray-700`}
+									className={`inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 ${pathname === item.path ? "border-b-2 border-indigo-500 text-gray-900" : "border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700"} `}
 								>
 									{item.title}
 								</Link>
