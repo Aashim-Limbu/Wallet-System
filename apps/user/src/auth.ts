@@ -7,6 +7,7 @@ import { getUserByEmail } from "@repo/db/user";
 import bcrypt from "bcryptjs";
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	adapter: PrismaAdapter(prisma),
+	session: { strategy: "jwt" },
 	providers: [
 		Credentials({
 			name: "Sign in with Email and Password",
