@@ -1,12 +1,11 @@
-import React from "react";
+import { login } from "@/_actions/auth.action";
 import SigninForm from "@repo/ui/signin";
-import login from "@/_actions/login";
+import React from "react";
 function LoginPage() {
-	console.log("this is the page");
 	return (
-		<div>
+		<>
 			<SigninForm signinAction={login} />
-		</div>
+		</>
 	);
 }
 

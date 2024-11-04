@@ -15,7 +15,7 @@ function FormGroup({ label, type, error, name, placeholder }: GroupType) {
 			>
 				{label}
 			</label>
-			<div className="relative mt-1 rounded-md shadow-sm">
+			<div className="relative mt-2 rounded-md shadow-sm">
 				<input
 					id={name}
 					name={name}

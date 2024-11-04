@@ -1,7 +1,10 @@
 "use server";
 import { prisma } from "@repo/db/client";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import bcrypt from "bcryptjs";
-import { registrationSchema } from "@repo/common/user";
+import { registrationSchema, loginSchema } from "@repo/common/user";
 import { redirect } from "next/navigation";
 import { ZodError } from "zod";
 export async function registerUser(prevState: unknown, formData: FormData) {
@@ -42,4 +45,33 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 		}
 	}
 	redirect("/");
+}
+
+export async function login(prevState: unknown, formdata: FormData) {
+	const data = {
+		email: formdata.get("email"),
+		password: formdata.get("password"),
+	};
+	const refinedData = loginSchema.safeParse(data);
+	if (!refinedData.success) {
+		return { error: "Invalid Fields" };
+	}
+	const { email, password } = refinedData.data;
+	try {
+		await signIn("credentials", {
+			email,
+			password,
+			redirectTo: DEFAULT_LOGIN_REDIRECT,
+		});
+	} catch (error) {
+		if (error instanceof AuthError) {
+			switch (error.type) {
+				case "CredentialsSignin":
+					return { error: "Invalid Credentials" };
+				default:
+					return { error: "Something went wrong" };
+			}
+		}
+		throw error;
+	}
 }

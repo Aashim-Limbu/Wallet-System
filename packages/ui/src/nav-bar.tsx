@@ -2,6 +2,7 @@
 import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 import Logo from "../assets/bitpay-svgrepo-com.svg";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import {
 	Disclosure,
@@ -13,6 +14,7 @@ import {
 	MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Button } from "./button";
 
 export default function NavBar() {
 	const pathname = usePathname();
@@ -73,28 +75,29 @@ export default function NavBar() {
 								className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
 							>
 								<MenuItem>
-									<a
+									<Link
 										href="#"
 										className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
 									>
 										Your Profile
-									</a>
+									</Link>
 								</MenuItem>
 								<MenuItem>
-									<a
+									<Link
 										href="#"
 										className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
 									>
 										Settings
-									</a>
+									</Link>
 								</MenuItem>
 								<MenuItem>
-									<a
-										href="#"
-										className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+									<Button
+										variant="Primary"
+										className="w-full "
+										onClick={() => signOut({ redirectTo: "/login" })}
 									>
 										Sign out
-									</a>
+									</Button>
 								</MenuItem>
 							</MenuItems>
 						</Menu>
@@ -152,11 +155,7 @@ export default function NavBar() {
 				<div className="border-t border-gray-200 pb-3 pt-4">
 					<div className="flex items-center px-4">
 						<div className="flex-shrink-0">
-							<img
-								alt=""
-								src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-								className="h-10 w-10 rounded-full"
-							/>
+							<NextImage alt="" src={Logo} className="h-10 w-10 rounded-full" />
 						</div>
 						<div className="ml-3">
 							<div className="text-base font-medium text-gray-800">
