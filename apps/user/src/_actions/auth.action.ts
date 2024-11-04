@@ -5,8 +5,10 @@ import { AuthError } from "next-auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import bcrypt from "bcryptjs";
 import { registrationSchema, loginSchema } from "@repo/common/user";
-import { redirect } from "next/navigation";
 import { ZodError } from "zod";
+import { generateVerificationToken } from "@repo/db/getVerificationToken";
+import { getUserByEmail } from "@repo/db/user";
+import { sendVerificationEmail } from "@/_config/mail.config";
 export async function registerUser(prevState: unknown, formData: FormData) {
 	const formdata = {
 		name: formData.get("name"),
@@ -24,6 +26,10 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 				name: refinedData.name,
 			},
 		});
+		const verificationToken = await generateVerificationToken(
+			refinedData.email
+		);
+		return { success: "Confirmation Email sent" };
 	} catch (error) {
 		if (error instanceof ZodError) {
 			const zError = error.errors.reduce(
@@ -44,7 +50,6 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 			return { error: "Something went terribly wrong ❌ -register action" };
 		}
 	}
-	redirect("/");
 }
 
 export async function login(prevState: unknown, formdata: FormData) {
@@ -54,9 +59,19 @@ export async function login(prevState: unknown, formdata: FormData) {
 	};
 	const refinedData = loginSchema.safeParse(data);
 	if (!refinedData.success) {
+		// console.log(refinedData.error);
 		return { error: "Invalid Fields" };
 	}
 	const { email, password } = refinedData.data;
+	const existingUser = await getUserByEmail(email);
+	if (!existingUser || !existingUser.email || !existingUser.password) {
+		return { error: "User doesn't exists" };
+	}
+	if (!existingUser.emailVerified) {
+		const verificationToken = await generateVerificationToken(email);
+		// await sendVerificationEmail(email, verificationToken);
+		return { success: "Confirmation Email sent" };
+	}
 	try {
 		await signIn("credentials", {
 			email,

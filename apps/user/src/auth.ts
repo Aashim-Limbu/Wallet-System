@@ -5,6 +5,8 @@ import authConfig from "@/auth.config";
 import { getUserById } from "@repo/db/user";
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	events: {
+		//events are something that doesn't return response but useful for logs , handle side effects like in our case.
+		//this gets trigger when we use one of the provider like google, github,twitter so we directly manipulated the emailVerified to be true
 		async linkAccount({ user }) {
 			await prisma.user.update({
 				where: { id: user.id },
@@ -19,12 +21,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		error: "/error",
 	},
 	callbacks: {
-		// async signIn({ user }) {
-		// 	if (!user.id) return false;
-		// 	const existingUser = await getUserById(user.id);
-		//     if(!existingUser?.emailVerified)return false
-		// 	return true;
-		// },
+		async signIn({ user , account }) {
+			if (!user.id) return false;
+            if(account?.provider !== 'credentials')return true
+			const existingUser = await getUserById(user.id);
+		    if(!existingUser?.emailVerified)return false
+			return true;
+		},
 		async session({ token, session }) {
 			if (token.sub && session.user) {
 				session.user.id = token.sub; //adding id

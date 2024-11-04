@@ -1,6 +1,10 @@
 import React, { ReactNode } from "react";
 function AuthLayout({ children }: { children: ReactNode }) {
-	return <>{children}</>;
+	return (
+		<>
+			{children}
+		</>
+	);
 }
 
 export default AuthLayout;
