@@ -41,11 +41,8 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 				},
 				{}
 			);
-			console.log("Instance of Zod Error", zError);
 			return zError;
 		} else if (error instanceof Error) {
-			console.log("Instance of Error");
-			console.log(error);
 			return { error: error.message };
 		} else {
 			return { error: "Something went terribly wrong ❌ -register action" };
@@ -65,13 +62,14 @@ export async function login(prevState: unknown, formdata: FormData) {
 	}
 	const { email, password } = refinedData.data;
 	const existingUser = await getUserByEmail(email);
+	//! this is for a case where you will have email for O-Auth login and you need to distinct between the O-Auth vs credential user
 	if (!existingUser || !existingUser.email || !existingUser.password) {
 		return { error: "User doesn't exists" };
 	}
 	if (!existingUser.emailVerified) {
 		const verificationToken = await generateVerificationToken(email);
 		await sendVerificationEmail(email, verificationToken);
-		return { success: "Confirmation Email sent" };
+		return { success: "You are not verified. Confirmation Email sent" };
 	}
 	try {
 		await signIn("credentials", {
@@ -90,4 +88,31 @@ export async function login(prevState: unknown, formdata: FormData) {
 		}
 		throw error;
 	}
+}
+export async function validateToken(prevState: unknown, token: string) {
+	//token from search param
+	const verificationToken = await prisma.verificationToken.findFirst({
+		where: { token },
+	});
+	if (!verificationToken)
+		return { error: "Invalid Token Sorry cannot proceed you request" };
+	if (verificationToken?.expires < new Date())
+		return { error: "Sorry but the token has expired" };
+	const existingUser = await getUserByEmail(verificationToken.email);
+	if (!existingUser) return { error: "Email doesn't exists" };
+	await prisma.user.update({
+		where: { email: existingUser.email },
+		data: {
+			emailVerified: new Date(),
+			email: verificationToken.email, //^ User request for email update
+		},
+	});
+	await prisma.verificationToken.delete({
+		where: {
+			id_token: {
+				id: verificationToken.id,
+				token: verificationToken.token,
+			},
+		},
+	});
 }
