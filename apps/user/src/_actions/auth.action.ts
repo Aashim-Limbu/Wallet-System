@@ -6,9 +6,9 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import bcrypt from "bcryptjs";
 import { registrationSchema, loginSchema } from "@repo/common/user";
 import { ZodError } from "zod";
-import { generateVerificationToken } from "@repo/db/getVerificationToken";
 import { getUserByEmail } from "@repo/db/user";
 import { sendVerificationEmail } from "@/_config/mail.config";
+import { generateVerificationToken } from "@repo/db/generateVerificationToken";
 export async function registerUser(prevState: unknown, formData: FormData) {
 	const formdata = {
 		name: formData.get("name"),
@@ -29,6 +29,7 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 		const verificationToken = await generateVerificationToken(
 			refinedData.email
 		);
+		await sendVerificationEmail(refinedData.email, verificationToken);
 		return { success: "Confirmation Email sent" };
 	} catch (error) {
 		if (error instanceof ZodError) {
@@ -69,7 +70,7 @@ export async function login(prevState: unknown, formdata: FormData) {
 	}
 	if (!existingUser.emailVerified) {
 		const verificationToken = await generateVerificationToken(email);
-		// await sendVerificationEmail(email, verificationToken);
+		await sendVerificationEmail(email, verificationToken);
 		return { success: "Confirmation Email sent" };
 	}
 	try {
