@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import { registrationSchema, loginSchema } from "@repo/common/user";
 import { ZodError } from "zod";
 import { getUserByEmail } from "@repo/db/user";
-import { sendVerificationEmail } from "@/_config/mail.config";
+import { sendVerificationEmail } from "@repo/common/send-email";
 import { generateVerificationToken } from "@repo/db/generateVerificationToken";
 export async function registerUser(prevState: unknown, formData: FormData) {
 	const formdata = {
@@ -49,7 +49,6 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 		}
 	}
 }
-
 export async function login(prevState: unknown, formdata: FormData) {
 	const data = {
 		email: formdata.get("email"),
@@ -115,4 +114,5 @@ export async function validateToken(prevState: unknown, token: string) {
 			},
 		},
 	});
+	return { success: "Successfully verified please login " };
 }

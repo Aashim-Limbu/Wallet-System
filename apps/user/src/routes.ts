@@ -10,7 +10,7 @@ export const publicRoutes = ["/", "/new-verification"];
  * These routes will redirect logged in user to /account
  * @type{string[]}
  */
-export const authRoutes = ["/login", "/register", "/error"];
+export const authRoutes = ["/login", "/register", "/error", "/reset-password"];
 
 /**
  * The prefix for API authentication routes
