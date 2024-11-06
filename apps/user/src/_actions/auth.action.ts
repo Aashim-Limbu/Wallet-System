@@ -14,16 +14,19 @@ import {
 import { ZodError } from "zod";
 import { getUserByEmail } from "@repo/db/user";
 import {
+	send2FATokenEmail,
 	sendResetPasswordEmail,
 	sendVerificationEmail,
 } from "@repo/common/send-email";
 import {
+	generate2FAToken,
 	generatePasswordResetToken,
 	generateVerificationToken,
 } from "@repo/db/generateVerificationToken";
 import {
-	verifyPasswordResetTokenByEmail,
 	verifyPasswordResetTokenByToken,
+	get2FAConfirmationByUserId,
+	verify2FATokenByEmail,
 } from "@repo/db/getVerificationByEmail";
 export async function registerUser(prevState: unknown, formData: FormData) {
 	const formdata = {
@@ -62,22 +65,60 @@ export async function login(prevState: unknown, formdata: FormData) {
 	const data = {
 		email: formdata.get("email"),
 		password: formdata.get("password"),
+		code: formdata.get("code"),
 	};
 	const refinedData = loginSchema.safeParse(data);
 	if (!refinedData.success) {
-		// console.log(refinedData.error);
+		console.log(refinedData.error.errors);
 		return { error: "Invalid Fields" };
 	}
-	const { email, password } = refinedData.data;
+	const { email, password, code } = refinedData.data;
+	console.log(refinedData.data);
 	const existingUser = await getUserByEmail(email);
 	//! this is for a case where you will have email for O-Auth login and you need to distinct between the O-Auth vs credential user
 	if (!existingUser || !existingUser.email || !existingUser.password) {
 		return { error: "User doesn't exists" };
 	}
 	if (!existingUser.emailVerified) {
-		const verificationToken = await generateVerificationToken(email);
-		await sendVerificationEmail(email, verificationToken);
-		return { success: "You are not verified. Confirmation Email sent" };
+		if (code) {
+			const twoFactorToken = await verify2FATokenByEmail(existingUser.id);
+			if (!twoFactorToken) return { error: "Invalid Token" };
+			if (twoFactorToken.token !== code)
+				return { error: "Sorry token didn't matched" };
+			const hasExpired = twoFactorToken.expires < new Date();
+			if (hasExpired) return { error: "Token has expired" };
+
+			await prisma.twoFactorToken.delete({
+				where: {
+					token_email: {
+						token: twoFactorToken.token,
+						email: twoFactorToken.email,
+					},
+				},
+			});
+			const existingConfirmation = await get2FAConfirmationByUserId(
+				existingUser.id
+			);
+			if (existingConfirmation) {
+				await prisma.twoFactorConfirmation.delete({
+					where: { id: existingConfirmation.id },
+				});
+			}
+			await prisma.twoFactorConfirmation.create({
+				data: {
+					userId: existingUser.id,
+				},
+			});
+		} else {
+			const verificationToken = await generateVerificationToken(email);
+			await sendVerificationEmail(email, verificationToken);
+			return { success: "You are not verified. Confirmation Email sent" };
+		}
+	}
+	if (existingUser.isEnabled2FA) {
+		const twofactoAuthToken = await generate2FAToken(existingUser.email);
+		await send2FATokenEmail(existingUser.email, twofactoAuthToken.token);
+		return { change: true };
 	}
 	try {
 		await signIn("credentials", {

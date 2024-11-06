@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@repo/db/client";
 import authConfig from "@/auth.config";
 import { getUserById } from "@repo/db/user";
+import { get2FAConfirmationByUserId } from "@repo/db/getVerificationByEmail";
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	events: {
 		//events are something that doesn't return response but useful for logs , handle side effects like in our case.
@@ -26,6 +27,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			if (!user.id) return false;
 			const existingUser = await getUserById(user.id);
 			if (!existingUser?.emailVerified) return false;
+			if (existingUser.isEnabled2FA) {
+				const isConfirmed = await get2FAConfirmationByUserId(existingUser.id);
+				if (!isConfirmed) return false;
+				await prisma.twoFactorConfirmation.delete({
+					where: { id: isConfirmed.id },
+				});
+			}
 			return true;
 		},
 		async session({ token, session }) {
