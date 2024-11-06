@@ -129,7 +129,6 @@ export async function resetPassword(prevState: unknown, formData: FormData) {
 	const emailInput = { email: formData.get("email") };
 	try {
 		const refinedEmail = await checkEmailSchema.parseAsync(emailInput);
-		console.log(refinedEmail.email);
 		const { email } = refinedEmail;
 		const existingUser = await getUserByEmail(email);
 		if (!existingUser) return { error: "User doesn't exists" };
@@ -152,26 +151,30 @@ export async function resetPassword(prevState: unknown, formData: FormData) {
 	}
 }
 export async function changePassword(
-	prevState: unknown,
 	token: string,
+	prevState: unknown,
 	formData: FormData
 ) {
 	const formdata = {
-		password: formData.get("password"),
-		passwordConfirm: formData.get("passwordConfirm"),
+		password: formData.get("password") as string,
+		passwordConfirm: formData.get("passwordConfirm") as string,
 	};
+	console.log({ token });
 	try {
 		const refinedFormData = passwordResetSchema.parse(formdata);
+		if (!token) return { error: "token not found" };
+		console.log(refinedFormData);
 		const verifyToken = await verifyPasswordResetTokenByToken(token);
 		if (!verifyToken) return { error: "Invalid Token" };
-		if (verifyToken.expires > new Date())
+		if (verifyToken.expires < new Date())
 			return { error: "Token has expired !" };
 		const existingUser = await getUserByEmail(verifyToken.email);
 		if (!existingUser) return { error: "Request Failed !User do not exists" };
+		const hashedPassword = await bcrypt.hash(refinedFormData.password, 12);
 		await prisma.user.update({
 			where: { email: existingUser.email },
 			data: {
-				...refinedFormData,
+				password: hashedPassword,
 			},
 		});
 		await prisma.passwordResetToken.delete({
@@ -186,8 +189,10 @@ export async function changePassword(
 	} catch (error) {
 		if (error instanceof ZodError) {
 			const zError = transformZodErrorsToFieldErrors(error.errors);
+			console.log(zError);
 			return zError;
 		} else if (error instanceof Error) {
+			console.log(error);
 			return { error: error.message };
 		} else {
 			return { error: "Something went wrong" };

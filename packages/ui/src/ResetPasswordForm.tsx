@@ -5,17 +5,23 @@ import NextImage from "next/image";
 import Logo from "../assets/bitpay-svgrepo-com.svg";
 import { useActionState, useEffect } from "react";
 import { toast, Toaster } from "sonner";
-type ResetPasswordReturnType = Promise<{ [index: string]: string }>;
+import { useSearchParams } from "next/navigation";
+type ResetPasswordReturnType = Promise<Partial<{ [index: string]: string }>>;
 type ResetPasswordAction = (
+	token: string,
 	prevState: unknown,
 	formData: FormData
 ) => ResetPasswordReturnType;
 export default function ResetPasswordForm({
-	resetPassword,
+	changePassword,
 }: {
-	resetPassword: ResetPasswordAction;
+	changePassword: ResetPasswordAction;
 }) {
-	const [state, action, isPending] = useActionState(resetPassword, {});
+	const searchParam = useSearchParams();
+	const token = searchParam.get("token");
+	if (!token) return toast.error("Token not found");
+	const bindChangePassword = changePassword.bind(null, token);
+	const [state, action, isPending] = useActionState(bindChangePassword, {});
 	useEffect(() => {
 		if (state.error) {
 			toast.error(state.error);
