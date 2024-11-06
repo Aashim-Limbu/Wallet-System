@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 type GroupType = {
-	label: string;
+	label?: string;
 	type: "email" | "password" | "text";
 	error?: string;
 	name: string;

@@ -4,11 +4,27 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import bcrypt from "bcryptjs";
-import { registrationSchema, loginSchema } from "@repo/common/user";
+import {
+	registrationSchema,
+	loginSchema,
+	checkEmailSchema,
+	transformZodErrorsToFieldErrors,
+	passwordResetSchema,
+} from "@repo/common/user";
 import { ZodError } from "zod";
 import { getUserByEmail } from "@repo/db/user";
-import { sendVerificationEmail } from "@repo/common/send-email";
-import { generateVerificationToken } from "@repo/db/generateVerificationToken";
+import {
+	sendResetPasswordEmail,
+	sendVerificationEmail,
+} from "@repo/common/send-email";
+import {
+	generatePasswordResetToken,
+	generateVerificationToken,
+} from "@repo/db/generateVerificationToken";
+import {
+	verifyPasswordResetTokenByEmail,
+	verifyPasswordResetTokenByToken,
+} from "@repo/db/getVerificationByEmail";
 export async function registerUser(prevState: unknown, formData: FormData) {
 	const formdata = {
 		name: formData.get("name"),
@@ -33,14 +49,7 @@ export async function registerUser(prevState: unknown, formData: FormData) {
 		return { success: "Confirmation Email sent" };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			const zError = error.errors.reduce(
-				(acc: { [index: string]: string }, err) => {
-					const test = `${err.path[0]}`;
-					acc[test] = err.message;
-					return acc;
-				},
-				{}
-			);
+			const zError = transformZodErrorsToFieldErrors(error.errors);
 			return zError;
 		} else if (error instanceof Error) {
 			return { error: error.message };
@@ -115,4 +124,73 @@ export async function validateToken(prevState: unknown, token: string) {
 		},
 	});
 	return { success: "Successfully verified please login " };
+}
+export async function resetPassword(prevState: unknown, formData: FormData) {
+	const emailInput = { email: formData.get("email") };
+	try {
+		const refinedEmail = await checkEmailSchema.parseAsync(emailInput);
+		console.log(refinedEmail.email);
+		const { email } = refinedEmail;
+		const existingUser = await getUserByEmail(email);
+		if (!existingUser) return { error: "User doesn't exists" };
+		//user is there so create token
+		const token = await generatePasswordResetToken(email);
+		//send mail
+		await sendResetPasswordEmail(email, token);
+		return { success: "Password Reset Token sent successfully" };
+	} catch (error) {
+		if (error instanceof ZodError) {
+			const zError = transformZodErrorsToFieldErrors(error.errors);
+			if (zError.email === "user_do_not_exists")
+				return { error: "Sorry User do not exists" };
+			return zError;
+		} else if (error instanceof Error) {
+			return { error: error.message };
+		} else {
+			return { error: "Something went wrong" };
+		}
+	}
+}
+export async function changePassword(
+	prevState: unknown,
+	token: string,
+	formData: FormData
+) {
+	const formdata = {
+		password: formData.get("password"),
+		passwordConfirm: formData.get("passwordConfirm"),
+	};
+	try {
+		const refinedFormData = passwordResetSchema.parse(formdata);
+		const verifyToken = await verifyPasswordResetTokenByToken(token);
+		if (!verifyToken) return { error: "Invalid Token" };
+		if (verifyToken.expires > new Date())
+			return { error: "Token has expired !" };
+		const existingUser = await getUserByEmail(verifyToken.email);
+		if (!existingUser) return { error: "Request Failed !User do not exists" };
+		await prisma.user.update({
+			where: { email: existingUser.email },
+			data: {
+				...refinedFormData,
+			},
+		});
+		await prisma.passwordResetToken.delete({
+			where: {
+				email_token: {
+					email: existingUser.email,
+					token: token,
+				},
+			},
+		});
+		return { success: "Password Reset successfull Please Login " };
+	} catch (error) {
+		if (error instanceof ZodError) {
+			const zError = transformZodErrorsToFieldErrors(error.errors);
+			return zError;
+		} else if (error instanceof Error) {
+			return { error: error.message };
+		} else {
+			return { error: "Something went wrong" };
+		}
+	}
 }

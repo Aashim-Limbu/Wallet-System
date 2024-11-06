@@ -9,16 +9,20 @@
 		"./code": "./src/code.tsx",
 		"./signup": "./src/RegistrationForm.tsx",
 		"./form-input": "./src/FormGroup.tsx",
-		"./signin": "./src/SIgninForm.tsx"
+		"./signin": "./src/SIgninForm.tsx",
+		"./emailTemplate": "./src/email-template.tsx",
+		"./verificationPage": "./src/verifyUserPage.tsx",
+		"./reset-page": "./src/ResetPassword.tsx",
+		"./reset-password-form": "./src/ResetPasswordForm.tsx"
 	},
 	"scripts": {
 		"lint": "eslint . --max-warnings 0",
 		"generate:component": "turbo gen react-component"
 	},
 	"devDependencies": {
+		"@repo/common": "*",
 		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*",
-		"@repo/common": "*",
 		"@turbo/gen": "^1.12.4",
 		"@types/eslint": "^8.56.5",
 		"@types/node": "^20.11.24",
@@ -30,6 +34,8 @@
 	"dependencies": {
 		"@headlessui/react": "^2.2.0",
 		"@heroicons/react": "^2.1.5",
-		"react": "^18.2.0"
+		"@react-email/components": "^0.0.27",
+		"react": "^18.2.0",
+		"sonner": "^1.7.0"
 	}
 }

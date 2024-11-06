@@ -5,9 +5,10 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import FormGroup from "./FormGroup";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { Button } from "@headlessui/react";
+import { toast, Toaster } from "sonner";
 export default function SigninForm({ signinAction }: { signinAction: any }) {
 	const [error, action, isPending] = useActionState<{
 		[index: string]: string;
@@ -17,7 +18,17 @@ export default function SigninForm({ signinAction }: { signinAction: any }) {
 			useSearchParams().get("error") === "OAuthAccountNotLinked" &&
 			"Email already is in use with different provider",
 	};
-	console.log(errorUrl);
+	useEffect(() => {
+		if (error.error) {
+			toast.error(error.error);
+		}
+		if (errorUrl.error) {
+			toast.error(errorUrl.error);
+		}
+		if (error.success) {
+			toast.success(error.success);
+		}
+	}, [error]);
 	return (
 		<div className="flex min-h-full flex-1 flex-col justify-center py-4 sm:px-6 lg:px-8 not-prose">
 			<div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
@@ -80,12 +91,12 @@ export default function SigninForm({ signinAction }: { signinAction: any }) {
 							</div>
 
 							<div className="text-sm leading-6">
-								<a
-									href="#"
+								<Link
+									href="/reset-password"
 									className="font-semibold text-indigo-600 hover:text-indigo-500"
 								>
 									Forgot password?
-								</a>
+								</Link>
 							</div>
 						</div>
 						<div>
@@ -116,7 +127,9 @@ export default function SigninForm({ signinAction }: { signinAction: any }) {
 
 						<div className="mt-6 grid grid-cols-2 gap-4">
 							<Button
-								onClick={() => signIn("google", { redirectTo: "/" })}
+								onClick={() => {
+									signIn("google", { redirectTo: "/" });
+								}}
 								className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
 							>
 								<svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
@@ -172,6 +185,7 @@ export default function SigninForm({ signinAction }: { signinAction: any }) {
 					</Link>
 				</p>
 			</div>
+			<Toaster richColors position="top-center" />
 		</div>
 	);
 }

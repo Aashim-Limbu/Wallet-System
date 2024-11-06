@@ -1,9 +1,10 @@
 "use client";
 import NextImage from "next/image";
 import Logo from "../assets/bitpay-svgrepo-com.svg";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import Link from "next/link";
 import FormGroup from "./FormGroup";
+import { toast, Toaster } from "sonner";
 export default function RegistrationForm({
 	registerUser,
 }: {
@@ -12,6 +13,14 @@ export default function RegistrationForm({
 	const [error, action, isPending] = useActionState<{
 		[index: string]: string;
 	}>(registerUser, {});
+	useEffect(() => {
+		if (error.error) {
+			toast.error(error.error);
+		}
+		if (error.success) {
+			toast.success(error.success);
+		}
+	}, [error]);
 	return (
 		<>
 			<div className="flex min-h-full flex-1 flex-col justify-center py-4 sm:px-6 lg:px-8 not-prose">
@@ -73,6 +82,7 @@ export default function RegistrationForm({
 						</p>
 					</div>
 				</div>
+				<Toaster richColors position="top-center" />
 			</div>
 		</>
 	);
