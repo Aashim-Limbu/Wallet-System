@@ -79,9 +79,18 @@ export async function login(prevState: unknown, formdata: FormData) {
 	if (!existingUser || !existingUser.email || !existingUser.password) {
 		return { error: "User doesn't exists" };
 	}
+	const isValidPassword = await bcrypt.compare(password, existingUser.password);
+	//!validating the password before
+	if (!isValidPassword) return { error: "Password don't match" };
 	if (!existingUser.emailVerified) {
+		const verificationToken = await generateVerificationToken(email);
+		await sendVerificationEmail(email, verificationToken);
+		return { success: "You are not verified. Confirmation Email sent" };
+	}
+	//! for two factor enabled user
+	if (existingUser.isEnabled2FA) {
 		if (code) {
-			const twoFactorToken = await verify2FATokenByEmail(existingUser.id);
+			const twoFactorToken = await verify2FATokenByEmail(existingUser.email);
 			if (!twoFactorToken) return { error: "Invalid Token" };
 			if (twoFactorToken.token !== code)
 				return { error: "Sorry token didn't matched" };
@@ -110,22 +119,19 @@ export async function login(prevState: unknown, formdata: FormData) {
 				},
 			});
 		} else {
-			const verificationToken = await generateVerificationToken(email);
-			await sendVerificationEmail(email, verificationToken);
-			return { success: "You are not verified. Confirmation Email sent" };
+			const twofactoAuthToken = await generate2FAToken(existingUser.email);
+			await send2FATokenEmail(existingUser.email, twofactoAuthToken.token);
+			return { change: true };
 		}
 	}
-	if (existingUser.isEnabled2FA) {
-		const twofactoAuthToken = await generate2FAToken(existingUser.email);
-		await send2FATokenEmail(existingUser.email, twofactoAuthToken.token);
-		return { change: true };
-	}
 	try {
+		//* if above condition are satisfied we're ready to signin for otp the logic is inside the callback.signin
 		await signIn("credentials", {
 			email,
 			password,
 			redirectTo: DEFAULT_LOGIN_REDIRECT,
 		});
+		return { success: "Successfully login" };
 	} catch (error) {
 		if (error instanceof AuthError) {
 			switch (error.type) {
