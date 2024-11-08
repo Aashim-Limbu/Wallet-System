@@ -12,20 +12,29 @@ enum Role {
     USER
 }
 
+enum OnRampStatus {
+    Success
+    Failure
+    Processing
+}
+
+//-------------------------------------------------UserSchema -------------------------------------------------------------------------------------------------------------------//
 model User {
-    id               String                 @id @default(cuid())
-    name             String?
-    email            String                 @unique
-    emailVerified    DateTime?
-    image            String?
-    accounts         Account[]
-    sessions         Session[]
-    password         String?
-    role             Role                   @default(USER)
-    createdAt        DateTime               @default(now())
-    updatedAt        DateTime               @updatedAt
-    isEnabled2FA     Boolean                @default(false)
-    confirmTwoFactor TwoFactorConfirmation?
+    id                String                 @id @default(cuid())
+    name              String?
+    email             String                 @unique
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    sessions          Session[]
+    password          String?
+    role              Role                   @default(USER)
+    createdAt         DateTime               @default(now())
+    updatedAt         DateTime               @updatedAt
+    isEnabled2FA      Boolean                @default(false)
+    confirmTwoFactor  TwoFactorConfirmation?
+    balances          Balance[]
+    OnRampTransaction OnRampTransaction[]
 }
 
 model Account {
@@ -91,4 +100,34 @@ model TwoFactorConfirmation {
     id     String @id @default(cuid())
     userId String @unique
     User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+//--------------------------------------------------------------------Banking schema starts------------------------------------------------------------------------//
+model Bank {
+    id      Int       @id @default(autoincrement())
+    name    String    @unique
+    Balance Balance[]
+}
+
+model Balance {
+    id     Int    @id @default(autoincrement())
+    userId String @unique
+    bankId Int
+    locked Int
+    amount Int
+    Bank   Bank   @relation(fields: [bankId], references: [id])
+    User   User   @relation(fields: [userId], references: [id])
+
+    @@unique([bankId, userId])
+}
+
+model OnRampTransaction {
+    id        Int          @id @default(autoincrement())
+    status    OnRampStatus
+    token     String       @unique
+    provider  String
+    amount    Int
+    startTime DateTime
+    userId    String
+    user      User         @relation(fields: [userId], references: [id])
 }

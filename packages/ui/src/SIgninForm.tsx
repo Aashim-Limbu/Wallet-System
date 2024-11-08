@@ -15,10 +15,12 @@ type ReturnTypeofSigninAction = Promise<
 export default function SigninForm({
 	signinAction,
 }: {
+	/* eslint-disable no-unused-vars */
 	signinAction: (
 		prevState: unknown,
 		formdata: FormData
 	) => ReturnTypeofSigninAction;
+	/* eslint-enable no-unused-vars */
 }) {
 	const [error, action, isPending] = useActionState(signinAction, {});
 	const [currentData, setCurrentData] = useState({
