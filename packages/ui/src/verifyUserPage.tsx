@@ -9,6 +9,7 @@ type ReturnTypeAction = Promise<{ error?: string; success?: string }>;
 export default function verifyUserPage({
 	verifyAction,
 }: {
+	/* eslint-disable-next-line no-unused-vars */
 	verifyAction: (prevState: unknown, token: string) => ReturnTypeAction;
 }) {
 	const [error, action, isPending] = useActionState(verifyAction, {});

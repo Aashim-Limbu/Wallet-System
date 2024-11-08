@@ -7,11 +7,13 @@ import { useActionState, useEffect } from "react";
 import { toast, Toaster } from "sonner";
 import { useSearchParams } from "next/navigation";
 type ResetPasswordReturnType = Promise<Partial<{ [index: string]: string }>>;
+/* eslint-disable no-unused-vars */
 type ResetPasswordAction = (
 	token: string,
 	prevState: unknown,
 	formData: FormData
 ) => ResetPasswordReturnType;
+/* eslint-enable no-unused-vars */
 export default function ResetPasswordForm({
 	changePassword,
 }: {

@@ -23,8 +23,10 @@ export const loginSchema = z.object({
 			message:
 				"Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8-16 characters long.",
 		}),
+	code: z.string().optional().nullable(),
 });
-export const registrationSchema = z .object({
+export const registrationSchema = z
+	.object({
 		name: z
 			.string({ required_error: "Name field is empty" })
 			.min(3, { message: "A name must be greater than 3" }),

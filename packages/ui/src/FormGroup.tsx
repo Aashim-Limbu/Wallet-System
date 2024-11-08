@@ -1,4 +1,5 @@
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+import { ChangeEventHandler } from "react";
 type GroupType = {
 	label?: string;
 	type: "email" | "password" | "text";
@@ -6,7 +7,13 @@ type GroupType = {
 	name: string;
 	placeholder?: string;
 };
-function FormGroup({ label, type, error, name, placeholder }: GroupType) {
+function FormGroup({
+	label,
+	type,
+	error,
+	name,
+	placeholder,
+}: GroupType) {
 	return (
 		<div>
 			<label
@@ -29,6 +36,7 @@ function FormGroup({ label, type, error, name, placeholder }: GroupType) {
 							: "text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
 					}`}
 				/>
+
 				{error && (
 					<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
 						<ExclamationCircleIcon

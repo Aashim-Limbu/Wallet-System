@@ -20,5 +20,19 @@ export async function verifyPasswordResetTokenByToken(token: string) {
 	const resetToken = await prisma.passwordResetToken.findFirst({
 		where: { token },
 	});
-    return resetToken
+	return resetToken;
+}
+export async function verify2FATokenByEmail(email: string) {
+	const token = await prisma.twoFactorToken.findFirst({ where: { email } });
+	return token;
+}
+export async function get2FATokenByToken(token: string) {
+	const token2FA = await prisma.twoFactorToken.findUnique({ where: { token } });
+	return token2FA;
+}
+export async function get2FAConfirmationByUserId(userId: string) {
+	const confirmation = await prisma.twoFactorConfirmation.findUnique({
+		where: { userId },
+	});
+    return confirmation;
 }
