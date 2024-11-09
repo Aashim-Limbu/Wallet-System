@@ -9,9 +9,11 @@ export default function ResetPassword({
 	resetAction,
 }: {
 	resetAction: (
+		/* eslint-disable no-unused-vars */
 		prevState: unknown,
 		formData: FormData
 	) => ReturnTypePasswordReset;
+	/* eslint-enable no-unused-vars */
 }) {
 	const [state, action, isPending] = useActionState(resetAction, {});
 	useEffect(() => {
@@ -23,7 +25,7 @@ export default function ResetPassword({
 		}
 	}, [state]);
 	return (
-		<div className="bg-white shadow sm:rounded-lg w-full sm:max-w-md md:max-w-lg not-prose">
+		<div className="bg-white shadow sm:rounded-lg w-full sm:max-w-md md:max-w-lg">
 			<Toaster duration={5000} position="top-center" richColors />
 			<div className="px-4 py-5 sm:p-6">
 				<h3 className="text-base font-semibold leading-6 text-gray-900">
@@ -41,7 +43,7 @@ export default function ResetPassword({
 							name="email"
 							type="email"
 							placeholder="elonmusk@gmail.com"
-                            error={state.email}
+							error={state.email}
 						/>
 					</div>
 					<Button type="submit" variant="Primary" className="w-full">

@@ -23,7 +23,7 @@ export default function NavBar() {
 		{ title: "Account", path: "/account" },
 	];
 	return (
-		<Disclosure as="nav" className="bg-white shadow not-prose">
+		<Disclosure as="nav" className="bg-white shadow">
 			<div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
 				<div className="flex h-16 justify-between">
 					<div className="flex">

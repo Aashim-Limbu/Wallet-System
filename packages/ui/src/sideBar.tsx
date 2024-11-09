@@ -54,7 +54,7 @@ export default function SideBar({ children }: { children: ReactNode }) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	return (
 		<>
-			<div className="not-prose">
+			<div className="h-full">
 				<Dialog
 					open={sidebarOpen}
 					onClose={setSidebarOpen}
@@ -65,7 +65,7 @@ export default function SideBar({ children }: { children: ReactNode }) {
 						className="fixed inset-0 bg-gray-900/80 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
 					/>
 
-					<div className="fixed inset-0 flex not-prose">
+					<div className="fixed inset-0 flex">
 						<DialogPanel
 							transition
 							className="relative mr-16 flex w-full max-w-xs flex-1 transform transition duration-300 ease-in-out data-[closed]:-translate-x-full"
@@ -201,7 +201,7 @@ export default function SideBar({ children }: { children: ReactNode }) {
 					</div>
 				</div>
 
-				<div className="lg:pl-72 not-prose">
+				<div className="lg:pl-72 h-full bg-gray-200/50 ">
 					<div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
 						<button
 							type="button"
@@ -286,7 +286,7 @@ export default function SideBar({ children }: { children: ReactNode }) {
 						</div>
 					</div>
 
-					<main className="py-10">
+					<main className="py-10 flex flex-col">
 						<div className="px-4 sm:px-6 lg:px-8">{children}</div>
 					</main>
 				</div>

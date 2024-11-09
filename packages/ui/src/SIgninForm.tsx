@@ -50,7 +50,7 @@ export default function SigninForm({
 		}
 	}, [error.change, shouldChange]);
 	return (
-		<div className="flex min-h-full flex-1 flex-col justify-center py-4 sm:px-6 lg:px-8 not-prose">
+		<div className="flex min-h-full flex-1 flex-col justify-center py-4 sm:px-6 lg:px-8">
 			<div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
 				<NextImage
 					alt="Your Company"

@@ -45,7 +45,7 @@ export default function verifyUserPage({
 	return (
 		<>
 			<Toaster richColors position="top-center" />
-			<div className="relative bg-gray-800 h-full px-6 py-32  sm:px-12 sm:py-42 lg:py-56 lg:px-16 not-prose">
+			<div className="relative bg-gray-800 h-full px-6 py-32  sm:px-12 sm:py-42 lg:py-56 lg:px-16">
 				<div className="absolute inset-0 overflow-hidden">
 					<NextImage
 						alt=""
