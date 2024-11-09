@@ -24,7 +24,7 @@ export default function NavBar() {
 	];
 	return (
 		<Disclosure as="nav" className="bg-white shadow not-prose">
-			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+			<div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
 				<div className="flex h-16 justify-between">
 					<div className="flex">
 						<div className="flex flex-shrink-0 items-center">

@@ -1,13 +1,11 @@
-import NavBar from "@repo/ui/nav-bar";
+import SideBar from "@repo/ui/sidebat-Layout";
 import React from "react";
 import { ReactNode } from "react";
 
 function ApplicationLayout({ children }: { children: ReactNode }) {
 	return (
-		<div className="w-full relative">
-			<NavBar />
-
-			{children}
+		<div className="w-full flex flex-col h-full">
+			<SideBar>{children}</SideBar>
 		</div>
 	);
 }

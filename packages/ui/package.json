@@ -13,7 +13,8 @@
 		"./emailTemplate": "./src/email-template.tsx",
 		"./verificationPage": "./src/verifyUserPage.tsx",
 		"./reset-page": "./src/ResetPassword.tsx",
-		"./reset-password-form": "./src/ResetPasswordForm.tsx"
+		"./reset-password-form": "./src/ResetPasswordForm.tsx",
+		"./sidebat-Layout": "./src/sideBar.tsx"
 	},
 	"scripts": {
 		"lint": "eslint . --max-warnings 0",
