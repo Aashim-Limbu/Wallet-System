@@ -104,22 +104,34 @@ model TwoFactorConfirmation {
 
 //--------------------------------------------------------------------Banking schema starts------------------------------------------------------------------------//
 model Bank {
-    id          Int       @id @default(autoincrement())
-    name        String    @unique
+    id          Int        @id @default(autoincrement())
+    name        String     @unique
+    bankId      Int
+    users       BankUser[]
     redirectUrl String
-    Balance     Balance[]
+}
+
+model BankUser {
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    bank      Bank     @relation(fields: [bankId], references: [id])
+    phone     String
+    password  String
+    bankId    Int
+    balance   Balance?
 }
 
 model Balance {
-    id     Int    @id @default(autoincrement())
-    userId String @unique
-    bankId Int
-    locked Int?
-    amount Int
-    Bank   Bank   @relation(fields: [bankId], references: [id])
-    User   User   @relation(fields: [userId], references: [id])
+    id         Int       @id @default(autoincrement())
+    locked     Int?
+    amount     Int
+    userId     String
+    bankUserId Int       @unique
+    User       User?     @relation(fields: [userId], references: [id])
+    bankUser   BankUser? @relation(fields: [bankUserId], references: [id])
 
-    @@unique([bankId, userId])
+    @@map("walletBalance")
 }
 
 model OnRampTransaction {

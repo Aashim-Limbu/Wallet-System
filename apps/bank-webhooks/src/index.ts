@@ -1,8 +1,10 @@
 import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
 import { prisma } from "@repo/db/client";
 import { OnRampStatus } from "@prisma/client";
 const app = express();
-app.use(express());
+app.use(express.json());
 app.get("/", (req, res) => {
 	res.status(200).json({
 		status: "success",
@@ -11,17 +13,22 @@ app.get("/", (req, res) => {
 });
 app.post("/web-hook", async (req, res) => {
 	const { amount, userId, token } = req.body;
+
 	try {
 		await prisma.$transaction([
-			prisma.balance.update({
+			prisma.balance.upsert({
 				where: {
 					userId: userId,
 				},
-				data: {
+				update: {
 					amount: {
 						increment: amount,
 					},
 				},
+                create:{
+                    amount:amount || 0,
+                    userId:userId
+                }
 			}),
 			prisma.onRampTransaction.update({
 				where: {
@@ -50,6 +57,7 @@ app.all("*", (req, res) => {
 		status: "error",
 	});
 });
-app.listen(8000, () => {
-	console.log("Port is listening to 8000:");
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+	console.log(`Server is listening to ${port}`);
 });

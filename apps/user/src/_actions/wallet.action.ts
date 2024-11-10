@@ -14,7 +14,7 @@ export async function loadWallet(
 	const session = await auth();
 	const data = {
 		amount: formdata.get("amount") as string,
-		bank: formdata.get("bank") as string,
+		redirectUrl: formdata.get("bank") as string,
 	};
 	const redirectUrl = formdata.get("bank") as string;
 	if (!session?.user) return { error: "Not a session user" };
@@ -26,7 +26,7 @@ export async function loadWallet(
 				userId: session.user.id,
 				status: OnRampStatus.Processing,
 				token: token,
-				provider: data.bank,
+				provider: data.redirectUrl,
 				startTime: new Date(),
 				amount: setAmount(Number(data.amount)),
 			},
