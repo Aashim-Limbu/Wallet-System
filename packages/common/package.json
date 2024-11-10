@@ -16,7 +16,8 @@
 	},
 	"exports": {
 		"./user": "./src/user.ts",
-		"./send-email": "./src/mail.config.ts"
+		"./send-email": "./src/mail.config.ts",
+        "./utils":"./src/utils.ts"
 	},
 	"devDependencies": {
 		"@repo/db": "*",

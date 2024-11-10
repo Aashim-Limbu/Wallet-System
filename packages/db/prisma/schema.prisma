@@ -104,16 +104,17 @@ model TwoFactorConfirmation {
 
 //--------------------------------------------------------------------Banking schema starts------------------------------------------------------------------------//
 model Bank {
-    id      Int       @id @default(autoincrement())
-    name    String    @unique
-    Balance Balance[]
+    id          Int       @id @default(autoincrement())
+    name        String    @unique
+    redirectUrl String
+    Balance     Balance[]
 }
 
 model Balance {
     id     Int    @id @default(autoincrement())
     userId String @unique
     bankId Int
-    locked Int
+    locked Int?
     amount Int
     Bank   Bank   @relation(fields: [bankId], references: [id])
     User   User   @relation(fields: [userId], references: [id])

@@ -12,7 +12,8 @@
 		"./client": "./src/prisma.ts",
 		"./user": "./src/getuser.ts",
 		"./generateVerificationToken": "./src/getVerificationToken.ts",
-		"./getVerificationByEmail": "./src/verificationToken.ts"
+		"./getVerificationByEmail": "./src/verificationToken.ts",
+		"./getOnRampTransaction": "./src/bank.ts"
 	},
 	"description": "",
 	"devDependencies": {

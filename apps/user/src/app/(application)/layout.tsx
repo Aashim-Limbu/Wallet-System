@@ -1,4 +1,4 @@
-import SideBar from "@repo/ui/sidebat-Layout";
+import SideBar from "@repo/ui/sidebar-Layout"
 import React from "react";
 import { ReactNode } from "react";
 

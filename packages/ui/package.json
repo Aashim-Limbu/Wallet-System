@@ -3,6 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
+		"./select": "./src/select.tsx",
 		"./nav-bar": "./src/nav-bar.tsx",
 		"./button": "./src/button.tsx",
 		"./card": "./src/card.tsx",
@@ -14,7 +15,8 @@
 		"./verificationPage": "./src/verifyUserPage.tsx",
 		"./reset-page": "./src/ResetPassword.tsx",
 		"./reset-password-form": "./src/ResetPasswordForm.tsx",
-		"./sidebat-Layout": "./src/sideBar.tsx"
+		"./sidebar-Layout": "./src/sideBar.tsx",
+		"./skeleton-loader": "./src/Skeleton-Loader.tsx"
 	},
 	"scripts": {
 		"lint": "eslint . --max-warnings 0",
