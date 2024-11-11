@@ -138,7 +138,7 @@ export default function AddWalllet({
 								Recent Transactions
 							</p>
 						</div>
-						<div className="flex flex-col divide-y-2 divide-gray-300 space-y-2  w-full">
+						<div className="grid divide-y-2 divide-gray-300 gap-y-2  w-full">
 							<Suspense fallback={<OnRampSkeleton />}>{OnRampLists}</Suspense>
 						</div>
 					</div>
@@ -149,15 +149,27 @@ export default function AddWalllet({
 }
 function OnRampSkeleton() {
 	return (
-		<SkeletonWrapper>
-			<div className="flex justify-between w-full">
-				<div className="flex gap-1 flex-col w-1/2  font-semibold leading-4">
-					<div className="h-4 w-1/2 bg-gray-300 rounded-lg" />
-					<div className="h-4 w-1/3 bg-gray-300 rounded-lg" />
-				</div>
+		<>
+			<SkeletonWrapper>
+				<div className="flex justify-between py-2 w-full">
+					<div className="flex gap-1 flex-col w-1/2  font-semibold leading-4">
+						<div className="h-4 w-1/2 bg-gray-300 rounded-lg" />
+						<div className="h-4 w-1/3 bg-gray-300 rounded-lg" />
+					</div>
 
-				<div className="h-8 rounded-lg w-16 bg-gray-300" />
-			</div>
-		</SkeletonWrapper>
+					<div className="h-8 rounded-lg w-16 bg-gray-300" />
+				</div>
+			</SkeletonWrapper>
+			<SkeletonWrapper>
+				<div className="flex justify-between py-2 w-full">
+					<div className="flex gap-1 flex-col w-1/2  font-semibold leading-4">
+						<div className="h-4 w-1/2 bg-gray-300 rounded-lg" />
+						<div className="h-4 w-1/3 bg-gray-300 rounded-lg" />
+					</div>
+
+					<div className="h-8 rounded-lg w-16 bg-gray-300" />
+				</div>
+			</SkeletonWrapper>
+		</>
 	);
 }

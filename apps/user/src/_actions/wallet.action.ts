@@ -5,34 +5,34 @@ import { prisma } from "@repo/db/client";
 import { OnRampStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { setAmount } from "@repo/common/utils";
-import { redirect } from "next/navigation";
+import { loadWalletSchema } from "@repo/common/wallet";
 
 export async function loadWallet(
 	prevState: unknown,
 	formdata: FormData
 ): Promise<Partial<{ [index: string]: string }>> {
 	const session = await auth();
+	if (!session?.user || !session.user.id) return { error: "No Session Found" };
 	const data = {
-		amount: formdata.get("amount") as string,
+		amount: Number(formdata.get("amount")),
 		redirectUrl: formdata.get("bank") as string,
 	};
+	const token = v4();
 	const redirectUrl = formdata.get("bank") as string;
-	if (!session?.user) return { error: "Not a session user" };
 	try {
-		const token = v4();
-		if (!session.user.id) return { error: "User not found" };
+		const refinedData = loadWalletSchema.parse(data);
 		await prisma.onRampTransaction.create({
 			data: {
 				userId: session.user.id,
 				status: OnRampStatus.Processing,
 				token: token,
-				provider: data.redirectUrl,
+				provider: refinedData.redirectUrl,
 				startTime: new Date(),
-				amount: setAmount(Number(data.amount)),
+				amount: setAmount(refinedData.amount),
 			},
 		});
 		revalidatePath("/transfer");
-        return {success:redirectUrl}
+		return { success: redirectUrl };
 	} catch (error) {
 		if (error instanceof Error) {
 			console.log(error.message);

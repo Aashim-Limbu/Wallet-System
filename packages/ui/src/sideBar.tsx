@@ -23,6 +23,7 @@ import {
 	ArrowsRightLeftIcon,
 	ChevronDownIcon,
 	UserCircleIcon,
+	UsersIcon,
 } from "@heroicons/react/20/solid";
 
 import { signOut, useSession } from "next-auth/react";
@@ -40,6 +41,11 @@ const navigation = [
 		name: "Transaction",
 		href: "/transaction",
 		icon: BanknotesIcon,
+	},
+	{
+		name: "P2P",
+		href: "/p2p-transfer",
+		icon: UsersIcon,
 	},
 ];
 

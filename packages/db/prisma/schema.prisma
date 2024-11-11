@@ -106,19 +106,18 @@ model TwoFactorConfirmation {
 model Bank {
     id          Int        @id @default(autoincrement())
     name        String     @unique
-    bankId      Int
-    users       BankUser[]
     redirectUrl String
+    BankUser    BankUser[]
 }
 
 model BankUser {
     id        Int      @id @default(autoincrement())
     firstName String
     lastName  String
+    bankId    Int
     bank      Bank     @relation(fields: [bankId], references: [id])
     phone     String
     password  String
-    bankId    Int
     balance   Balance?
 }
 
@@ -127,7 +126,7 @@ model Balance {
     locked     Int?
     amount     Int
     userId     String
-    bankUserId Int       @unique
+    bankUserId Int       @unique // Simplifing the Bank balance to have one-one relation
     User       User?     @relation(fields: [userId], references: [id])
     bankUser   BankUser? @relation(fields: [bankUserId], references: [id])
 

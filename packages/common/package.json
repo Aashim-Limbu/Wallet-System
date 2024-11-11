@@ -17,7 +17,8 @@
 	"exports": {
 		"./user": "./src/user.ts",
 		"./send-email": "./src/mail.config.ts",
-        "./utils":"./src/utils.ts"
+		"./utils": "./src/utils.ts",
+		"./wallet": "./src/wallet.ts"
 	},
 	"devDependencies": {
 		"@repo/db": "*",

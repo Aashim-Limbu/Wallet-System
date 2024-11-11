@@ -18,17 +18,17 @@ app.post("/web-hook", async (req, res) => {
 		await prisma.$transaction([
 			prisma.balance.upsert({
 				where: {
-					userId: userId,
+					userId: userId ,
 				},
 				update: {
 					amount: {
 						increment: amount,
 					},
 				},
-                create:{
-                    amount:amount || 0,
-                    userId:userId
-                }
+				create: {
+					amount: amount || 0,
+					userId: userId,
+				},
 			}),
 			prisma.onRampTransaction.update({
 				where: {

@@ -17,14 +17,14 @@ async function RampTransactionsList() {
 	return (
 		<>
 			{rampTxns.map((txn) => (
-				<div key={txn.id} className="flex justify-between">
+				<div key={txn.id} className="flex pt-1 justify-between ">
 					<div className="flex flex-col  font-semibold leading-4">
 						<p className="text-sm">Recieved NPR.</p>
 						<span className="text-zinc-500 text-xs ">
 							{formatDate(txn.startTime)}
 						</span>
 					</div>
-					<div>+Rs {getAmount(txn.amount)}</div>
+					<div className="inline-flex items-center text-neutral-700 tracking-tight font-semibold">+Rs {getAmount(txn.amount)}</div>
 				</div>
 			))}
 		</>
