@@ -119,9 +119,10 @@ export async function login(prevState: unknown, formdata: FormData) {
 				},
 			});
 		} else {
+            //generate 2FA if there is no code
 			const twofactoAuthToken = await generate2FAToken(existingUser.email);
 			await send2FATokenEmail(existingUser.email, twofactoAuthToken.token);
-			return { change: true };
+			return { change: true };//this is for the UI part to show the input code part
 		}
 	}
 	try {
