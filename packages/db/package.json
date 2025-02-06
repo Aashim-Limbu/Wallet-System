@@ -17,10 +17,10 @@
 	},
 	"description": "",
 	"devDependencies": {
-		"prisma": "^5.22.0"
+		"prisma": "^6.3.1"
 	},
 	"dependencies": {
-		"@prisma/client": "^5.22.0",
+		"@prisma/client": "^6.3.1",
 		"@types/uuid": "^10.0.0",
 		"uuid": "^11.0.2"
 	}
