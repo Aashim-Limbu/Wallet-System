@@ -1,44 +1,45 @@
 {
-	"name": "@repo/ui",
-	"version": "0.0.0",
-	"private": true,
-	"exports": {
-		"./select": "./src/select.tsx",
-		"./nav-bar": "./src/nav-bar.tsx",
-		"./button": "./src/button.tsx",
-		"./card": "./src/card.tsx",
-		"./code": "./src/code.tsx",
-		"./signup": "./src/RegistrationForm.tsx",
-		"./form-input": "./src/FormGroup.tsx",
-		"./signin": "./src/SIgninForm.tsx",
-		"./emailTemplate": "./src/email-template.tsx",
-		"./verificationPage": "./src/verifyUserPage.tsx",
-		"./reset-page": "./src/ResetPassword.tsx",
-		"./reset-password-form": "./src/ResetPasswordForm.tsx",
-		"./sidebar-Layout": "./src/sideBar.tsx",
-		"./skeleton-loader": "./src/Skeleton-Loader.tsx"
-	},
-	"scripts": {
-		"lint": "eslint . --max-warnings 0",
-		"generate:component": "turbo gen react-component"
-	},
-	"devDependencies": {
-		"@repo/common": "*",
-		"@repo/eslint-config": "*",
-		"@repo/typescript-config": "*",
-		"@turbo/gen": "^1.12.4",
-		"@types/eslint": "^8.56.5",
-		"@types/node": "^20.11.24",
-		"@types/react": "^18.2.61",
-		"@types/react-dom": "^18.2.19",
-		"eslint": "^8.57.0",
-		"typescript": "5.5.4"
-	},
-	"dependencies": {
-		"@headlessui/react": "^2.2.0",
-		"@heroicons/react": "^2.1.5",
-		"@react-email/components": "^0.0.27",
-		"react": "^18.2.0",
-		"sonner": "^1.7.0"
-	}
+  "name": "@repo/ui",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./select": "./src/select.tsx",
+    "./nav-bar": "./src/nav-bar.tsx",
+    "./button": "./src/button.tsx",
+    "./card": "./src/card.tsx",
+    "./code": "./src/code.tsx",
+    "./signup": "./src/RegistrationForm.tsx",
+    "./form-input": "./src/FormGroup.tsx",
+    "./signin": "./src/SIgninForm.tsx",
+    "./emailTemplate": "./src/email-template.tsx",
+    "./verificationPage": "./src/verifyUserPage.tsx",
+    "./reset-page": "./src/ResetPassword.tsx",
+    "./reset-password-form": "./src/ResetPasswordForm.tsx",
+    "./sidebar-Layout": "./src/sideBar.tsx",
+    "./skeleton-loader": "./src/Skeleton-Loader.tsx",
+    "./not-found": "./src/NotFoundPage.tsx"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "generate:component": "turbo gen react-component"
+  },
+  "devDependencies": {
+    "@repo/common": "*",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@turbo/gen": "^1.12.4",
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "eslint": "^8.57.0",
+    "typescript": "5.5.4"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.1.5",
+    "@react-email/components": "^0.0.27",
+    "react": "^18.2.0",
+    "sonner": "^1.7.0"
+  }
 }
